@@ -5,35 +5,36 @@ import time                 # importing time library for delay
 GPIO.setwarnings(False)
 GPIO.setmode(GPIO.BOARD)     # enable BOARD pin numberings
 GPIO.setup(11,GPIO.OUT)      # Set pin 11 as output
-GPIO.setup(13,GPIO.OUT)
-GPIO.setup(15,GPIO.OUT)
-GPIO.setup(7, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
-GPIO.setup(12, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
+GPIO.setup(13,GPIO.OUT)       # Set pin 13 as output
+GPIO.setup(15,GPIO.OUT)      # Set pin 15 as output
+GPIO.setup(7, GPIO.IN, pull_up_down=GPIO.PUD_DOWN) #set button 1 as input
+GPIO.setup(12, GPIO.IN, pull_up_down=GPIO.PUD_DOWN) #set button 2 as input
 
 counter = 0
 
 def main():
+    # making the button intrupts and link to handle method
     GPIO.add_event_detect(7, GPIO.RISING, callback=handler,bouncetime=400)
     GPIO.add_event_detect(12, GPIO.RISING, callback=handler,bouncetime=400)
-    while True:
-        time.sleep(0)
+   
     
 
 def handler(pin):
-    global counter
+    global counter # call on the global counter
     print("=====================================")
-    if pin==7:
+    
+    if pin==7: #check which button is pressed
         print("counting up")
         counter += 1
-        if counter == 8:
+        if counter == 8: #check if maximum is reached
             counter = 0
         countUp(counter)
         
-    if pin==12:
+    if pin==12:#check which button is pressed
         print("counting down")
         counter -= 1
         if counter == -1:
-            counter = 7
+            counter = 7 #check if manimum is reached
         countDown(counter)
    
     return
@@ -57,10 +58,11 @@ def countDown(x):
     time.sleep(1)  #delay to make changes visible
         
 def makeThreeBitBinary(n):
+    #convert string to 3 bit binary number
     binaryString = str(bin(n))[2:]
     bitList = list(binaryString)
 
-    while(len(bitList) < 3):
+    while(len(bitList) < 3): #add zeroes in front if number has kess than 3 bits
         bitList = ['0'] + bitList
 
     return bitList
